@@ -1,3 +1,4 @@
+import { clear } from '@testing-library/user-event/dist/clear'
 import { React, useState } from 'react'
 
 const ToDoList = () => {
@@ -9,11 +10,20 @@ const ToDoList = () => {
         if (newTask !== '') {
             setTasks([...tasks, newTask])
             setNewTask('')
+            clearInput()
         }
+    }
+
+    const clearInput = () => {
+        document.querySelector('input').value = ''
     }
 
     const handleChange = (event) => {
         setNewTask(event.target.value)
+    }
+
+    const removeTask = (indexToRemove) => {
+        setTasks(tasks.filter((_, index) => index !== indexToRemove))
     }
 
     return (
@@ -26,7 +36,7 @@ const ToDoList = () => {
             </div>
             <ul>
                 {tasks.map((task, index) => {
-                    return <li key={index}>{task}
+                    return <li key={index}>{task} <button onClick={() => removeTask(index)}>Remove</button>
                     </li>
                 })}
             </ul>
